@@ -14,7 +14,6 @@ app.use("/customer/auth/*", function auth(req,res,next){
 //Write the authenication mechanism here
 const session = req.session;
 if (session && session.accessToken) {
-
     next();
 } else {
     res.status(401).json({ error: 'Unauthorized' });

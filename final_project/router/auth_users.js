@@ -23,6 +23,16 @@ regd_users.post("/login", (req,res) => {
   const password = req.body.password;
   if(username === '' || password === '')
     return res.status(401).json({message: "Please provide all the informations"});
+  if(!authenticatedUser(username, password))
+    return res.status(401).json({message: "Username or Password is incorrect"});
+
+  let accessToken = jwt.sign({
+    data: password
+  }, 'access', { expiresIn: 60 * 60 });
+  req.session.authorization = {
+    accessToken,username
+  }
+  return res.status(200).send("User successfully logged in");
   
 });
 
